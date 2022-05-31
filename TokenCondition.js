@@ -289,6 +289,7 @@ const TokenCondition = (() => { // eslint-disable-line no-unused-vars
 
                     case 'rotation':
                     case 'light_multiplier':
+                    case 'layer':
                         break;
 
                 }
@@ -321,7 +322,7 @@ const TokenCondition = (() => { // eslint-disable-line no-unused-vars
         }
     }
 
-    const supportedModifyProperties = ['rotation','width','height','left','top'];
+    const supportedModifyProperties = ['rotation','width','height','left','top','layer'];
 
     class Modify {
 
@@ -419,8 +420,8 @@ const TokenCondition = (() => { // eslint-disable-line no-unused-vars
 
             // apply adjustments
             this.adjustments.forEach(a => Object.assign(mods,a.getMods(mods)));
-
-            dest.set(mods);
+            dest.set(mods);            
+            //dest.set("layer","map")
         }
 
     }
@@ -489,6 +490,7 @@ const TokenCondition = (() => { // eslint-disable-line no-unused-vars
     const attachConditionToTokenExternal = (condition_id, token_id) => {
         let conditionToken = getObj('graphic', condition_id);
         let targetToken = getObj('graphic', token_id);
+        log("allisfun");
 
         if(!targetToken){
             return {
@@ -536,7 +538,7 @@ const TokenCondition = (() => { // eslint-disable-line no-unused-vars
 
     // on add graphic, lookup represented character, if it's name begins with /^Condition:/i then do things.
     // also support decoration and mount
-    const handleAddGraphic = (obj) => {
+    const handleAddGraphic = (obj) => {        
         let character = getObj('character',obj.get('represents'));
         if(character) {
             let match = matchConditionChar(character);
